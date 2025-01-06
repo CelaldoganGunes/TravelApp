@@ -14,10 +14,23 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val locations = listOf(
-            Location("Eiffel Tower", "Paris", "Île-de-France", "https://example.com/eiffel.jpg"),
-            Location("Statue of Liberty", "New York", "New York County", "https://example.com/liberty.jpg"),
-            Location("Great Wall", "Beijing", "China", "https://example.com/wall.jpg")
+            Location(
+                "Eiffel Tower", "Paris", "Île-de-France",
+                "https://example.com/eiffel.jpg",
+                "Eiffel Kulesi, 1889 Dünya Fuarı için inşa edilmiş ikonik bir yapıdır."
+            ),
+            Location(
+                "Statue of Liberty", "New York", "New York County",
+                "https://example.com/liberty.jpg",
+                "Özgürlük Anıtı, ABD'yi temsil eden dünyaca ünlü bir simgedir."
+            ),
+            Location(
+                "Great Wall", "Beijing", "China",
+                "https://example.com/wall.jpg",
+                "Çin Seddi, Çin'in kuzey sınırlarını korumak için inşa edilen tarihi bir yapıdır."
+            )
         )
+
 
         recyclerView.adapter = LocationAdapter(locations)
     }
