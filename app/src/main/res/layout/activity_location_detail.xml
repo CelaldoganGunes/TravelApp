@@ -9,29 +9,44 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Konum Başlığı -->
         <TextView
-            android:id="@+id/tvDetailName"
+            android:id="@+id/tvDetailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location Name"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            android:gravity="center_horizontal" />
 
+        <!-- İl ve İlçe Bilgisi -->
         <TextView
             android:id="@+id/tvDetailCityDistrict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="City, District"
             android:textSize="18sp"
-            android:paddingBottom="8dp" />
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp" />
 
+        <!-- Görsel -->
+        <ImageView
+            android:id="@+id/imgDetailImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Açıklama Metni -->
         <TextView
             android:id="@+id/tvDetailDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Detailed description goes here."
-            android:textSize="16sp" />
+            android:text="Description goes here."
+            android:textSize="16sp"
+            android:paddingBottom="16dp" />
 
     </LinearLayout>
 </ScrollView>

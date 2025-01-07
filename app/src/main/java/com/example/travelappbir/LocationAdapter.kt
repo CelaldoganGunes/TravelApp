@@ -40,7 +40,8 @@ class LocationAdapter(
             intent.putExtra("name", location.name)
             intent.putExtra("city", location.city)
             intent.putExtra("district", location.district)
-            intent.putExtra("description", "Bu, ${location.name} hakkında detaylı açıklamadır.") // Sabit bir açıklama
+            intent.putExtra("description", location.description)
+            intent.putExtra("imageUrl", location.imageUrl)
             holder.itemView.context.startActivity(intent)
         }
     }
