@@ -26,6 +26,13 @@
         <activity
             android:name=".LocationDetailActivity"
             android:theme="@style/Theme.TravelAppBir" />
+
+        <!-- Google Maps API Anahtarı -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCb49BNvHG52VEAwvfBSkPI2MsQu3Mn4ps" />
+
     </application>
+
 
 </manifest>

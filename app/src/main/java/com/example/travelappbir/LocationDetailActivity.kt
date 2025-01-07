@@ -4,9 +4,18 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
-class LocationDetailActivity : AppCompatActivity() {
+class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    private lateinit var locationName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,28 +25,45 @@ class LocationDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Intent ile gelen verileri al
-        val name = intent.getStringExtra("name")
-        val city = intent.getStringExtra("city")
-        val district = intent.getStringExtra("district")
-        val description = intent.getStringExtra("description")
+        locationName = intent.getStringExtra("name") ?: "Unknown Location"
+        val city = intent.getStringExtra("city") ?: "Unknown City"
+        val district = intent.getStringExtra("district") ?: "Unknown District"
+        val description = intent.getStringExtra("description") ?: "No Description Available"
+        latitude = intent.getDoubleExtra("latitude", 0.0)
+        longitude = intent.getDoubleExtra("longitude", 0.0)
         val imageUrls = intent.getStringArrayListExtra("imageUrls") ?: arrayListOf()
 
-        // TextView'leri bul ve verilerle güncelle
+        // TextView ve ViewPager2'yi bul ve güncelle
         val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
         val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict)
         val tvDescription: TextView = findViewById(R.id.tvDetailDescription)
         val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager)
 
-        tvTitle.text = name
+        tvTitle.text = locationName
         tvCityDistrict.text = "$city, $district"
         tvDescription.text = description
 
-        // Fotoğraf galerisi adaptörünü bağla
+        // Fotoğraf galerisi için adaptörü bağla
         val galleryAdapter = GalleryAdapter(imageUrls)
         galleryViewPager.adapter = galleryAdapter
+
+        // Google Maps Fragment'i başlat
+        val mapFragment = SupportMapFragment.newInstance()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.mapFragment, mapFragment)
+            .commit()
+
+        mapFragment.getMapAsync(this)
     }
 
-    // Geri butonuna basıldığında MainActivity'ye dön
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Haritada konumu işaretle ve kamera konumunu ayarla
+        val location = LatLng(latitude, longitude)
+        googleMap.addMarker(MarkerOptions().position(location).title(locationName))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+    }
+
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -48,3 +74,4 @@ class LocationDetailActivity : AppCompatActivity() {
         }
     }
 }
+

@@ -46,5 +46,20 @@
             android:textSize="16sp"
             android:paddingBottom="16dp" />
 
+        <!-- Konum Başlığı -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Konum"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- Google Maps Fragment -->
+        <FrameLayout
+            android:id="@+id/mapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

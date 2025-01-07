@@ -23,9 +23,14 @@ class MainActivity : AppCompatActivity() {
                 "Eiffel Tower",
                 "Paris",
                 "Île-de-France",
-                "https://example.com/eiffel1.jpg",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg",
                 "Eiffel Kulesi hakkında detaylı bilgi.",
-                listOf("https://example.com/eiffel1.jpg", "https://example.com/eiffel2.jpg", "https://example.com/eiffel3.jpg")
+                listOf(
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg",
+                    "https://example.com/eiffel2.jpg",
+                    "https://example.com/eiffel3.jpg"
+                ),
+                48.8588443, 2.2943506
             ),
             Location(
                 "Statue of Liberty",
@@ -33,7 +38,12 @@ class MainActivity : AppCompatActivity() {
                 "New York County",
                 "https://example.com/liberty1.jpg",
                 "Özgürlük Anıtı hakkında detaylı bilgi.",
-                listOf("https://example.com/liberty1.jpg", "https://example.com/liberty2.jpg", "https://example.com/liberty3.jpg")
+                listOf(
+                    "https://example.com/liberty1.jpg",
+                    "https://example.com/liberty2.jpg",
+                    "https://example.com/liberty3.jpg"
+                ),
+                40.689247, -74.044502
             )
         )
 

@@ -41,9 +41,12 @@ class LocationAdapter(
             intent.putExtra("city", location.city)
             intent.putExtra("district", location.district)
             intent.putExtra("description", location.description)
-            intent.putStringArrayListExtra("imageUrls", ArrayList(location.imageUrls)) // Görseller listesi
+            intent.putStringArrayListExtra("imageUrls", ArrayList(location.imageUrls))
+            intent.putExtra("latitude", location.latitude) // Enlem
+            intent.putExtra("longitude", location.longitude) // Boylam
             holder.itemView.context.startActivity(intent)
         }
+
     }
 
     override fun getItemCount(): Int = locations.size
