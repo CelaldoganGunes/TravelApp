@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.viewpager2)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -18,27 +18,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Veri listesi
-        locationList = mutableListOf(
+        val locationList = mutableListOf(
             Location(
                 "Eiffel Tower",
                 "Paris",
                 "Île-de-France",
-                "https://example.com/eiffel.jpg",
-                "Eiffel Kulesi hakkında detaylı bilgi."
+                "https://example.com/eiffel1.jpg",
+                "Eiffel Kulesi hakkında detaylı bilgi.",
+                listOf("https://example.com/eiffel1.jpg", "https://example.com/eiffel2.jpg", "https://example.com/eiffel3.jpg")
             ),
             Location(
                 "Statue of Liberty",
                 "New York",
                 "New York County",
-                "https://example.com/liberty.jpg",
-                "Özgürlük Anıtı hakkında detaylı bilgi."
-            ),
-            Location(
-                "Great Wall",
-                "Beijing",
-                "China",
-                "https://example.com/wall.jpg",
-                "Çin Seddi hakkında detaylı bilgi."
+                "https://example.com/liberty1.jpg",
+                "Özgürlük Anıtı hakkında detaylı bilgi.",
+                listOf("https://example.com/liberty1.jpg", "https://example.com/liberty2.jpg", "https://example.com/liberty3.jpg")
             )
         )
 

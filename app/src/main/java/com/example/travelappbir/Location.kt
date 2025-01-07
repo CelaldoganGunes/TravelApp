@@ -5,5 +5,6 @@ data class Location(
     val city: String,
     val district: String,
     val imageUrl: String,
-    val description: String
+    val description: String,
+    val imageUrls: List<String> // Galeri için görseller
 )

@@ -1,9 +1,9 @@
 package com.example.travelappbir
 
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 
 class LocationDetailActivity : AppCompatActivity() {
@@ -20,23 +20,21 @@ class LocationDetailActivity : AppCompatActivity() {
         val city = intent.getStringExtra("city")
         val district = intent.getStringExtra("district")
         val description = intent.getStringExtra("description")
-        val imageUrl = intent.getStringExtra("imageUrl")
+        val imageUrls = intent.getStringArrayListExtra("imageUrls") ?: arrayListOf()
 
-        // TextView ve ImageView'leri bul ve verilerle güncelle
+        // TextView'leri bul ve verilerle güncelle
         val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
         val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict)
         val tvDescription: TextView = findViewById(R.id.tvDetailDescription)
-        val imgDetailImage: ImageView = findViewById(R.id.imgDetailImage)
+        val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager)
 
         tvTitle.text = name
         tvCityDistrict.text = "$city, $district"
         tvDescription.text = description
 
-        // Görseli yükle
-        Glide.with(this)
-            .load(imageUrl)
-            .placeholder(R.drawable.ic_placeholder)
-            .into(imgDetailImage)
+        // Fotoğraf galerisi adaptörünü bağla
+        val galleryAdapter = GalleryAdapter(imageUrls)
+        galleryViewPager.adapter = galleryAdapter
     }
 
     // Geri butonuna basıldığında MainActivity'ye dön

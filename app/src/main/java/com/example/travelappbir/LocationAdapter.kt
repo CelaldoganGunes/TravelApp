@@ -41,7 +41,7 @@ class LocationAdapter(
             intent.putExtra("city", location.city)
             intent.putExtra("district", location.district)
             intent.putExtra("description", location.description)
-            intent.putExtra("imageUrl", location.imageUrl)
+            intent.putStringArrayListExtra("imageUrls", ArrayList(location.imageUrls)) // Görseller listesi
             holder.itemView.context.startActivity(intent)
         }
     }

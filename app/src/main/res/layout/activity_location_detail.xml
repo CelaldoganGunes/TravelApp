@@ -30,13 +30,11 @@
             android:gravity="center_horizontal"
             android:paddingBottom="16dp" />
 
-        <!-- Görsel -->
-        <ImageView
-            android:id="@+id/imgDetailImage"
+        <!-- Fotoğraf Galerisi -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/galleryViewPager"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder"
             android:layout_marginBottom="16dp" />
 
         <!-- Açıklama Metni -->
