@@ -1,75 +1,94 @@
 package com.example.travelappbir
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LocationAdapter
-    private lateinit var locationList: MutableList<Location> // Orijinal veri listesi
-    private lateinit var filteredList: MutableList<Location> // Filtrelenen liste
+    private var locationList: MutableList<Location> = mutableListOf()
+    private var filteredList: MutableList<Location> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Veri listesi
-        val locationList = mutableListOf(
+        // RecyclerView'i başlat
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Test verilerini doldur
+        locationList = mutableListOf(
             Location(
                 "Eiffel Tower",
                 "Paris",
                 "Île-de-France",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg",
+                "https://example.com/eiffel.jpg",
                 "Eiffel Kulesi hakkında detaylı bilgi.",
                 listOf(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg",
+                    "https://example.com/eiffel1.jpg",
                     "https://example.com/eiffel2.jpg",
                     "https://example.com/eiffel3.jpg"
                 ),
-                48.8588443, 2.2943506
+                48.8588443,
+                2.2943506
             ),
             Location(
                 "Statue of Liberty",
                 "New York",
                 "New York County",
-                "https://example.com/liberty1.jpg",
+                "https://example.com/liberty.jpg",
                 "Özgürlük Anıtı hakkında detaylı bilgi.",
                 listOf(
                     "https://example.com/liberty1.jpg",
                     "https://example.com/liberty2.jpg",
                     "https://example.com/liberty3.jpg"
                 ),
-                40.689247, -74.044502
+                40.689247,
+                -74.044502
+            ),
+            Location(
+                "Great Wall",
+                "Beijing",
+                "China",
+                "https://example.com/greatwall.jpg",
+                "Çin Seddi hakkında detaylı bilgi.",
+                listOf(
+                    "https://example.com/wall1.jpg",
+                    "https://example.com/wall2.jpg",
+                    "https://example.com/wall3.jpg"
+                ),
+                40.431908,
+                116.570374
             )
         )
 
-        // Başlangıçta tüm verileri filtrelenmiş listeye kopyala
-        filteredList = locationList.toMutableList()
+        // Filtrelenmiş listeyi doldur
+        filteredList.addAll(locationList)
 
-        // RecyclerView ve adaptör kurulum
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        // Adapteri bağla
         adapter = LocationAdapter(filteredList)
         recyclerView.adapter = adapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as androidx.appcompat.widget.SearchView
+        val searchView = searchItem?.actionView as SearchView
 
-        // Arama çubuğu dinleyicisi
+        // Arama dinleyicisini ayarla
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                // Filtreleme işlemi
                 filteredList.clear()
                 if (!newText.isNullOrEmpty()) {
                     val searchText = newText.lowercase()
@@ -81,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     filteredList.addAll(locationList)
                 }
-                adapter.notifyDataSetChanged() // Listeyi güncelle
+                adapter.notifyDataSetChanged() // RecyclerView'i güncelle
                 return true
             }
         })
