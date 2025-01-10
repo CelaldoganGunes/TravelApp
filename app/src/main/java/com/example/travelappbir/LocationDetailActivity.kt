@@ -1,7 +1,8 @@
 package com.example.travelappbir
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +13,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private lateinit var locationName: String
-    private lateinit var location: Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +37,12 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         longitude = intent.getDoubleExtra("longitude", 0.0)
         val imageUrls = intent.getStringArrayListExtra("imageUrls") ?: arrayListOf()
 
-        // Location nesnesini oluştur
-        location = Location(locationName, city, district, "", description, imageUrls, latitude, longitude)
-
         // UI bileşenlerini bul ve güncelle
         val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
         val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict)
         val tvDescription: TextView = findViewById(R.id.tvDetailDescription)
         val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager)
-        val btnFavorite: Button = findViewById(R.id.btnFavorite)
+        val fabDirections: FloatingActionButton = findViewById(R.id.fabDirections)
 
         tvTitle.text = locationName
         tvCityDistrict.text = "$city, $district"
@@ -54,12 +52,9 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         val galleryAdapter = GalleryAdapter(imageUrls)
         galleryViewPager.adapter = galleryAdapter
 
-        // Favori durumu kontrolü
-        updateFavoriteButton(btnFavorite)
-
-        // Favori butonu dinleyicisi
-        btnFavorite.setOnClickListener {
-            toggleFavorite(location, btnFavorite)
+        // Floating Action Button'a tıklama işlemi
+        fabDirections.setOnClickListener {
+            openGoogleMapsForDirections(latitude, longitude)
         }
 
         // Google Maps Fragment'i başlat
@@ -70,6 +65,19 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             .commit()
 
         mapFragment.getMapAsync(this)
+    }
+
+    private fun openGoogleMapsForDirections(latitude: Double, longitude: Double) {
+        // Google Maps yol tarifi URI'si
+        val uri = Uri.parse("google.navigation:q=$latitude,$longitude")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        } else {
+            // Google Maps uygulaması yüklü değilse
+            Toast.makeText(this, "Google Maps uygulaması yüklü değil", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -86,31 +94,6 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun toggleFavorite(location: Location, button: Button) {
-        val favorites = PreferenceHelper.getFavorites(this)
-        if (favorites.any { it.name == location.name }) {
-            // Favorilerden kaldır
-            favorites.removeIf { it.name == location.name }
-            PreferenceHelper.saveFavorites(this, favorites)
-            Toast.makeText(this, "Favorilerden kaldırıldı", Toast.LENGTH_SHORT).show()
-        } else {
-            // Favorilere ekle
-            favorites.add(location)
-            PreferenceHelper.saveFavorites(this, favorites)
-            Toast.makeText(this, "Favorilere eklendi", Toast.LENGTH_SHORT).show()
-        }
-        updateFavoriteButton(button)
-    }
-
-    private fun updateFavoriteButton(button: Button) {
-        val favorites = PreferenceHelper.getFavorites(this)
-        if (favorites.any { it.name == location.name }) {
-            button.text = "Favorilerden Kaldır"
-        } else {
-            button.text = "Favorilere Ekle"
         }
     }
 }
