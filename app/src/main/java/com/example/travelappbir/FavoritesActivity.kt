@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class FavoritesActivity : AppCompatActivity() {
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: LocationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
@@ -16,13 +19,24 @@ class FavoritesActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Favoriler"
 
-        // Favoriler listesini al
-        val favoriteLocations = PreferenceHelper.getFavorites(this)
-
-        // RecyclerView'u ayarla
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewFavorites)
+        // RecyclerView'u başlat
+        recyclerView = findViewById(R.id.recyclerViewFavorites)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = LocationAdapter(favoriteLocations)
+
+        // İlk favoriler listesini yükle
+        updateFavoritesList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Sayfa geri geldiğinde favoriler listesini güncelle
+        updateFavoritesList()
+    }
+
+    private fun updateFavoritesList() {
+        val favoriteLocations = PreferenceHelper.getFavorites(this)
+        adapter = LocationAdapter(favoriteLocations)
+        recyclerView.adapter = adapter
     }
 
     private fun openLocationDetail(location: Location) {
