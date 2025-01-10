@@ -3,6 +3,8 @@ package com.example.travelappbir
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,8 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private lateinit var locationName: String
+    private lateinit var location: Location
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +40,12 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         latitude = intent.getDoubleExtra("latitude", 0.0)
         longitude = intent.getDoubleExtra("longitude", 0.0)
         val imageUrls = intent.getStringArrayListExtra("imageUrls") ?: arrayListOf()
+
+        // Location nesnesini oluştur
+        location = Location(locationName, city, district, "", description, imageUrls, latitude, longitude)
+
+        // Favori durumu kontrolü
+        isFavorite = isLocationFavorite(location)
 
         // UI bileşenlerini bul ve güncelle
         val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
@@ -87,13 +97,52 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_location_detail, menu)
+        updateFavoriteIcon(menu?.findItem(R.id.action_favorite))
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 true
             }
+            R.id.action_favorite -> {
+                toggleFavoriteStatus(item)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun toggleFavoriteStatus(item: MenuItem) {
+        val favorites = PreferenceHelper.getFavorites(this)
+        if (isFavorite) {
+            // Favorilerden kaldır
+            favorites.removeIf { it.name == location.name }
+            Toast.makeText(this, "Favorilerden kaldırıldı", Toast.LENGTH_SHORT).show()
+        } else {
+            // Favorilere ekle
+            favorites.add(location)
+            Toast.makeText(this, "Favorilere eklendi", Toast.LENGTH_SHORT).show()
+        }
+        PreferenceHelper.saveFavorites(this, favorites)
+        isFavorite = !isFavorite
+        updateFavoriteIcon(item)
+    }
+
+    private fun updateFavoriteIcon(item: MenuItem?) {
+        item?.icon = if (isFavorite) {
+            getDrawable(R.drawable.ic_star_filled)
+        } else {
+            getDrawable(R.drawable.ic_star_border)
+        }
+    }
+
+    private fun isLocationFavorite(location: Location): Boolean {
+        val favorites = PreferenceHelper.getFavorites(this)
+        return favorites.any { it.name == location.name }
     }
 }
