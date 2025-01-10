@@ -1,5 +1,6 @@
 package com.example.travelappbir
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,6 +76,18 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    private fun openLocationDetail(location: Location) {
+        val intent = Intent(this, LocationDetailActivity::class.java)
+        intent.putExtra("name", location.name)
+        intent.putExtra("city", location.city)
+        intent.putExtra("district", location.district)
+        intent.putExtra("description", location.description)
+        intent.putExtra("latitude", location.latitude)
+        intent.putExtra("longitude", location.longitude)
+        intent.putStringArrayListExtra("imageUrls", ArrayList(location.imageUrls))
+        startActivity(intent)
+    }
+
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
@@ -106,5 +119,17 @@ class MainActivity : AppCompatActivity() {
         })
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_favorites -> {
+                // Favoriler sayfasına yönlendir
+                val intent = Intent(this, FavoritesActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
