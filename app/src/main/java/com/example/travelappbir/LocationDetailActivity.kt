@@ -5,9 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,6 +25,8 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationName: String
     private lateinit var location: Location
     private var isFavorite: Boolean = false
+    private lateinit var commentAdapter: CommentAdapter
+    private var comments: MutableList<Comment> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,38 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         // Floating Action Button'a tıklama işlemi
         fabDirections.setOnClickListener {
             openGoogleMapsForDirections(latitude, longitude)
+        }
+
+        // Yorum RecyclerView
+        val recyclerViewComments: RecyclerView = findViewById(R.id.recyclerViewComments)
+        recyclerViewComments.layoutManager = LinearLayoutManager(this)
+        comments = PreferenceHelper.getComments(this, locationName).toMutableList()
+        commentAdapter = CommentAdapter(comments)
+        recyclerViewComments.adapter = commentAdapter
+
+        // Yorum ekleme bileşenleri
+        val etName: EditText = findViewById(R.id.etName)
+        val etRating: EditText = findViewById(R.id.etRating)
+        val etComment: EditText = findViewById(R.id.etComment)
+        val btnSubmitComment: Button = findViewById(R.id.btnSubmitComment)
+
+        btnSubmitComment.setOnClickListener {
+            val name = etName.text.toString()
+            val rating = etRating.text.toString().toIntOrNull()
+            val commentText = etComment.text.toString()
+
+            if (name.isNotEmpty() && rating != null && rating in 1..5 && commentText.isNotEmpty()) {
+                val newComment = Comment(name, rating, commentText)
+                comments.add(newComment)
+                PreferenceHelper.saveComments(this, locationName, comments)
+                commentAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Yorum kaydedildi!", Toast.LENGTH_SHORT).show()
+                etName.text.clear()
+                etRating.text.clear()
+                etComment.text.clear()
+            } else {
+                Toast.makeText(this, "Lütfen tüm alanları doğru doldurun!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Google Maps Fragment'i başlat

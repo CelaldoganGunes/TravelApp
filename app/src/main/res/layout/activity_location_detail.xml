@@ -64,5 +64,38 @@
             android:src="@drawable/ic_directions"
             android:tint="@android:color/white"
             app:backgroundTint="@color/purple_500" />
+
+        <!-- Yorum Yapma Alanı -->
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Adınız" />
+
+        <EditText
+            android:id="@+id/etRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Puan (1-5)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Yorumunuz" />
+
+        <Button
+            android:id="@+id/btnSubmitComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yorumu Gönder" />
+
+        <!-- Yorumlar Listesi -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>
