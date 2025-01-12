@@ -23,7 +23,7 @@ object PreferenceHelper {
         editor.putString(FAVORITES_KEY, json)
         editor.apply()
     }
-    
+
 
     // Favori Lokasyonları Getirme
     fun getFavorites(context: Context): MutableList<Location> {
