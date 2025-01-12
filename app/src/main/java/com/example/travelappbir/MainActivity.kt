@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,51 +25,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Test verilerini doldur
-        locationList = mutableListOf(
-            Location(
-                "Eiffel Tower",
-                "Paris",
-                "Île-de-France",
-                "https://example.com/eiffel.jpg",
-                "Eiffel Kulesi hakkında detaylı bilgi.",
-                listOf(
-                    "https://example.com/eiffel1.jpg",
-                    "https://example.com/eiffel2.jpg",
-                    "https://example.com/eiffel3.jpg"
-                ),
-                48.8588443,
-                2.2943506
-            ),
-            Location(
-                "Statue of Liberty",
-                "New York",
-                "New York County",
-                "https://example.com/liberty.jpg",
-                "Özgürlük Anıtı hakkında detaylı bilgi.",
-                listOf(
-                    "https://example.com/liberty1.jpg",
-                    "https://example.com/liberty2.jpg",
-                    "https://example.com/liberty3.jpg"
-                ),
-                40.689247,
-                -74.044502
-            ),
-            Location(
-                "Great Wall",
-                "Beijing",
-                "China",
-                "https://example.com/greatwall.jpg",
-                "Çin Seddi hakkında detaylı bilgi.",
-                listOf(
-                    "https://example.com/wall1.jpg",
-                    "https://example.com/wall2.jpg",
-                    "https://example.com/wall3.jpg"
-                ),
-                40.431908,
-                116.570374
-            )
-        )
+        // JSON'dan verileri yükle
+        loadLocationsFromJson()
 
         // Filtrelenmiş listeyi doldur
         filteredList.addAll(locationList)
@@ -74,6 +34,18 @@ class MainActivity : AppCompatActivity() {
         // Adapteri bağla
         adapter = LocationAdapter(filteredList)
         recyclerView.adapter = adapter
+    }
+
+    private fun loadLocationsFromJson() {
+        try {
+            val inputStream = assets.open("locations.json")
+            val reader = InputStreamReader(inputStream)
+            val type = object : TypeToken<List<Location>>() {}.type
+            locationList = Gson().fromJson(reader, type)
+            reader.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun openLocationDetail(location: Location) {

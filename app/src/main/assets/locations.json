@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Eiffel Tower",
+    "city": "Paris",
+    "district": "Île-de-France",
+    "imageUrl": "https://example.com/eiffel.jpg",
+    "description": "Eiffel Kulesi, Paris'teki en ünlü simgelerden biridir. 1889 Dünya Fuarı için inşa edilmiştir ve 330 metre yüksekliğiyle dikkat çeker.",
+    "imageUrls": [
+      "https://example.com/eiffel1.jpg",
+      "https://example.com/eiffel2.jpg",
+      "https://example.com/eiffel3.jpg"
+    ],
+    "latitude": 48.8588443,
+    "longitude": 2.2943506
+  },
+  {
+    "name": "Statue of Liberty",
+    "city": "New York",
+    "district": "New York County",
+    "imageUrl": "https://example.com/liberty.jpg",
+    "description": "Özgürlük Anıtı, ABD'nin simgelerinden biridir. New York'un Liberty Adası'nda bulunur ve bağımsızlık ile özgürlüğü temsil eder.",
+    "imageUrls": [
+      "https://example.com/liberty1.jpg",
+      "https://example.com/liberty2.jpg",
+      "https://example.com/liberty3.jpg"
+    ],
+    "latitude": 40.689247,
+    "longitude": -74.044502
+  },
+  {
+    "name": "Great Wall",
+    "city": "Beijing",
+    "district": "China",
+    "imageUrl": "https://example.com/greatwall.jpg",
+    "description": "Çin Seddi, dünyanın en uzun yapılarından biridir ve Çin'in kuzeyinde yer alır. Savunma amacıyla inşa edilmiştir.",
+    "imageUrls": [
+      "https://example.com/wall1.jpg",
+      "https://example.com/wall2.jpg",
+      "https://example.com/wall3.jpg"
+    ],
+    "latitude": 40.431908,
+    "longitude": 116.570374
+  },
+  {
+    "name": "DolmaBahçe Sarayı",
+    "city": "İstanbul",
+    "district": "Türkiye",
+    "imageUrl": "https://i.pinimg.com/236x/e8/25/c9/e825c9888e11f4f444234d74e34b2ed9.jpg",
+    "description": "Dolmabahçe Sarayı, Osmanlı İmparatorluğu'nun önemli mimari eserlerinden biridir. Beşiktaş'ta yer alır ve günümüzde müze olarak kullanılır.",
+    "imageUrls": [
+      "https://i.pinimg.com/236x/f9/57/78/f95778796e7cb043368566801056a6be.jpg",
+      "https://i.pinimg.com/236x/d3/1d/a1/d31da1e69eadf4dc0637fe90082d40f7.jpg",
+      "https://i.pinimg.com/474x/9b/5b/d2/9b5bd25513cc1ee0195378a24ba83777.jpg"
+    ],
+    "latitude": 41.109631,
+    "longitude": 29.83988
+  },
+  {
+    "name": "Tarihi Asansör",
+    "city": "İzmir",
+    "district": "Türkiye",
+    "imageUrl": "https://i.pinimg.com/236x/b7/66/45/b76645690d4047cb58e80580ee68ee80.jpg",
+    "description": "Tarihi Asansör, İzmir'de iki mahalleyi birbirine bağlayan ve tarihi öneme sahip bir yapıdır. 1907 yılında inşa edilmiştir.",
+    "imageUrls": [
+      "https://i.pinimg.com/236x/fe/6c/11/fe6c11f07d3cf86ca1e90a65553e9098.jpg",
+      "https://i.pinimg.com/236x/7c/5d/db/7c5ddb5e71f92036e66c2e16c06fd592.jpg",
+      "https://i.pinimg.com/236x/b6/42/b9/b642b9f0c50d4a0783f61ffab52d401b.jpg"
+    ],
+    "latitude": 38.408786,
+    "longitude": 27.117513
+  },
+  {
+    "name": "İzmir Saat Kulesi",
+    "city": "İzmir",
+    "district": "Türkiye",
+    "imageUrl": "https://i.pinimg.com/236x/0d/6e/d4/0d6ed45c7604bb80487313c93a4dbd61.jpg",
+    "description": "İzmir Saat Kulesi, Osmanlı Padişahı II. Abdülhamid'in tahta çıkışının 25. yıldönümü için 1901 yılında inşa edilmiştir. İzmir'in simgesidir.",
+    "imageUrls": [
+      "https://i.pinimg.com/236x/c5/87/62/c5876283b1b7a383a97dfb163df04e7a.jpg",
+      "https://i.pinimg.com/736x/21/a4/e2/21a4e2d82aba90b887d999e45688c06d.jpg",
+      "https://i.pinimg.com/236x/55/1b/87/551b87e8439291f6a2c7050a4fac9670.jpg"
+    ],
+    "latitude": 38.4188623,
+    "longitude": 27.1286959
+  },
+  {
+    "name": "Efes Antik Kenti",
+    "city": "İzmir",
+    "district": "Türkiye",
+    "imageUrl": "https://i.pinimg.com/236x/8a/90/77/8a907764948502ad856684ba0e537bee.jpg",
+    "description": "Efes Antik Kenti, Anadolu'nun batısında yer alan ve antik dönemin en önemli yerleşim yerlerinden biridir. Tarihi MÖ 6000'e dayanır.",
+    "imageUrls": [
+      "https://i.pinimg.com/236x/cf/94/f7/cf94f7f11be2bf23b26959f13d9f1859.jpg",
+      "https://i.pinimg.com/474x/13/56/db/1356db74684e8d9dc3e3616e1c34da91.jpg",
+      "https://i.pinimg.com/236x/0a/51/fc/0a51fc7235cad138730feaade5ed3c65.jpg"
+    ],
+    "latitude": 37.9404455,
+    "longitude": 27.3393194
+  },
+  {
+    "name": "Ayasofya",
+    "city": "İstanbul",
+    "district": "Fatih",
+    "imageUrl": "https://www.meroddi.com/wp-content/uploads/2022/06/ayasofyanin-gizemi.png",
+    "description": "Ayasofya, İstanbul'un tarihî yarımadasında yer alır. Bizans döneminde kilise, Osmanlı döneminde cami, modern Türkiye'de müze olarak hizmet vermiştir.",
+    "imageUrls": [
+      "https://tugva.org/wp-content/uploads/2020/07/WhatsApp-Image-2020-07-21-at-10.02.35-1.jpeg",
+      "https://benguturkcom.teimg.com/crop/1280x720/benguturk-com/uploads/2023/10/ayasofya-camii-aa-1488330.jpg",
+      "https://yenie.net/wp-content/uploads/2020/08/%C3%A7bk_4.jpg"
+    ],
+    "latitude": 41.008583,
+    "longitude": 28.980175
+  },
+  {
+    "name": "Sultan Ahmet Camii",
+    "city": "İstanbul",
+    "district": "Fatih",
+    "imageUrl": "https://benlerotel.com/kaynak/sehir/s-3-3e36a669bf.jpg",
+    "description": "Sultan Ahmet Camii, Osmanlı Padişahı I. Ahmed tarafından yaptırılmıştır. Mavi çinileriyle ünlüdür ve İstanbul'un önemli simgelerindendir.",
+    "imageUrls": [
+      "https://benlerotel.com/kaynak/sehir/s-2-21a0dd5f97.jpg",
+      "https://media-cdn.t24.com.tr/media/stories/2016/07/raw_34cumhuriyetin-ilk-yillarinda-sultanahmet-camiinin-kubbesini-delip-resim-galerisi-yapalim-demisler34_438594390.jpg",
+      "https://www.arttablo.com/upload/U-sultan-ahmet-camii-ic-gorunum-dini-inanc-kanvas-tablo1449184571-800.jpg"
+    ],
+    "latitude": 41.005409,
+    "longitude": 28.976813
+  }
+]
