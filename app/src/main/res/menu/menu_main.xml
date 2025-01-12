@@ -12,7 +12,7 @@
     <!-- Favoriler Butonu -->
     <item
         android:id="@+id/action_favorites"
-        android:icon="@android:drawable/star_big_on"
+        android:icon="@drawable/ic_star_filled"
         android:title="Favorites"
         app:showAsAction="always" />
 
