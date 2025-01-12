@@ -108,6 +108,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.action_visa_check -> {
+                // Vize Kontrol sayfasına geçiş
+                val intent = Intent(this, VisaCheckActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
