@@ -38,16 +38,14 @@ class VisaCheckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_visa_check)
 
-        val backButton: Button = findViewById(R.id.backButton)
         val spinnerPassportCountry: Spinner = findViewById(R.id.spinnerPassportCountry)
         val spinnerDestinationCountry: Spinner = findViewById(R.id.spinnerDestinationCountry)
         val checkVisaButton: Button = findViewById(R.id.checkVisaButton)
         val tvVisaResult: TextView = findViewById(R.id.tvVisaResult)
 
-        // Geri butonu işlemi
-        backButton.setOnClickListener {
-            onBackPressed()
-        }
+        // Geri butonunu etkinleştir
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Vize Kontrol"
 
         // Spinner için adapter
         val countryAdapter = CountryAdapter(this, countries)
@@ -72,4 +70,15 @@ class VisaCheckActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> { // Geri butonuna tıklanınca
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
