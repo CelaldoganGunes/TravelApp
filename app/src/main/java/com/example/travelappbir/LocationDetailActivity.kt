@@ -38,7 +38,7 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Intent ile gelen "name" değerini al
         locationName = intent.getStringExtra("name") ?: "Unknown Location"
-
+        supportActionBar?.title = locationName
         // JSON dosyasından lokasyon bilgilerini yükle
         location = loadLocationFromJson(locationName) ?: run {
             Toast.makeText(this, "Lokasyon bilgileri bulunamadı!", Toast.LENGTH_SHORT).show()
