@@ -1,6 +1,7 @@
 package com.example.travelappbir
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -27,6 +28,7 @@ object PreferenceHelper {
     fun getFavorites(context: Context): MutableList<Location> {
         val sharedPreferences = context.getSharedPreferences(FAVORITES_PREFS_NAME, Context.MODE_PRIVATE)
         val json = sharedPreferences.getString(FAVORITES_KEY, null) ?: return mutableListOf()
+        Log.d("FavoritesDebug", "Favoriler: $json")
         val type = object : TypeToken<MutableList<Location>>() {}.type
         return Gson().fromJson(json, type)
     }

@@ -17,11 +17,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
 class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private var latitude: Double = 0.0
-    private var longitude: Double = 0.0
     private lateinit var locationName: String
     private lateinit var location: Location
     private var isFavorite: Boolean = false
@@ -35,49 +36,57 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         // Geri butonunu etkinleştir
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Intent ile gelen verileri al
+        // Intent ile gelen "name" değerini al
         locationName = intent.getStringExtra("name") ?: "Unknown Location"
-        val city = intent.getStringExtra("city") ?: "Unknown City"
-        val district = intent.getStringExtra("district") ?: "Unknown District"
-        val description = intent.getStringExtra("description") ?: "No Description Available"
-        latitude = intent.getDoubleExtra("latitude", 0.0)
-        longitude = intent.getDoubleExtra("longitude", 0.0)
-        val imageUrls = intent.getStringArrayListExtra("imageUrls") ?: arrayListOf()
 
-        // Location nesnesini oluştur
-        location = Location(locationName, city, district, "", description, imageUrls, latitude, longitude)
+        // JSON dosyasından lokasyon bilgilerini yükle
+        location = loadLocationFromJson(locationName) ?: run {
+            Toast.makeText(this, "Lokasyon bilgileri bulunamadı!", Toast.LENGTH_SHORT).show()
+            finish() // Lokasyon bulunamazsa sayfayı kapat
+            return
+        }
 
         // Favori durumu kontrolü
         isFavorite = isLocationFavorite(location)
 
-        // UI bileşenlerini bul ve güncelle
+        // Lokasyon bilgilerini UI'ye yükle
+        bindLocationToUI()
+
+        // Yorumları yükle
+        setupComments()
+
+        // Haritayı yükle
+        setupMap()
+    }
+
+    private fun bindLocationToUI() {
         val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
         val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict)
         val tvDescription: TextView = findViewById(R.id.tvDetailDescription)
         val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager)
         val fabDirections: FloatingActionButton = findViewById(R.id.fabDirections)
 
-        tvTitle.text = locationName
-        tvCityDistrict.text = "$city, $district"
-        tvDescription.text = description
+        tvTitle.text = location.name
+        tvCityDistrict.text = "${location.city}, ${location.district}"
+        tvDescription.text = location.description
 
         // Fotoğraf galerisi için adaptörü bağla
-        val galleryAdapter = GalleryAdapter(imageUrls)
+        val galleryAdapter = GalleryAdapter(location.imageUrls)
         galleryViewPager.adapter = galleryAdapter
 
-        // Floating Action Button'a tıklama işlemi
+        // Yol tarifi butonu
         fabDirections.setOnClickListener {
-            openGoogleMapsForDirections(latitude, longitude)
+            openGoogleMapsForDirections(location.latitude, location.longitude)
         }
+    }
 
-        // Yorum RecyclerView
+    private fun setupComments() {
         val recyclerViewComments: RecyclerView = findViewById(R.id.recyclerViewComments)
         recyclerViewComments.layoutManager = LinearLayoutManager(this)
         comments = PreferenceHelper.getComments(this, locationName).toMutableList()
         commentAdapter = CommentAdapter(comments)
         recyclerViewComments.adapter = commentAdapter
 
-        // Yorum ekleme bileşenleri
         val etName: EditText = findViewById(R.id.etName)
         val etRating: EditText = findViewById(R.id.etRating)
         val etComment: EditText = findViewById(R.id.etComment)
@@ -101,8 +110,9 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this, "Lütfen tüm alanları doğru doldurun!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        // Google Maps Fragment'i başlat
+    private fun setupMap() {
         val mapFragment = SupportMapFragment.newInstance()
         supportFragmentManager
             .beginTransaction()
@@ -113,23 +123,34 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun openGoogleMapsForDirections(latitude: Double, longitude: Double) {
-        // Google Maps yol tarifi URI'si
         val uri = Uri.parse("google.navigation:q=$latitude,$longitude")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.google.android.apps.maps")
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         } else {
-            // Google Maps uygulaması yüklü değilse
             Toast.makeText(this, "Google Maps uygulaması yüklü değil", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun loadLocationFromJson(name: String): Location? {
+        return try {
+            val inputStream = assets.open("locations.json")
+            val reader = InputStreamReader(inputStream)
+            val type = object : TypeToken<List<Location>>() {}.type
+            val locations: List<Location> = Gson().fromJson(reader, type)
+            reader.close()
+            locations.find { it.name == name } // Lokasyonu isme göre bul
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
-        // Haritada konumu işaretle ve kamerayı yakınlaştır
-        val location = LatLng(latitude, longitude)
-        googleMap.addMarker(MarkerOptions().position(location).title(locationName))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+        val locationLatLng = LatLng(location.latitude, location.longitude)
+        googleMap.addMarker(MarkerOptions().position(locationLatLng).title(location.name))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, 15f))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -155,11 +176,9 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun toggleFavoriteStatus(item: MenuItem) {
         val favorites = PreferenceHelper.getFavorites(this)
         if (isFavorite) {
-            // Favorilerden kaldır
             favorites.removeIf { it.name == location.name }
             Toast.makeText(this, "Favorilerden kaldırıldı", Toast.LENGTH_SHORT).show()
         } else {
-            // Favorilere ekle
             favorites.add(location)
             Toast.makeText(this, "Favorilere eklendi", Toast.LENGTH_SHORT).show()
         }
