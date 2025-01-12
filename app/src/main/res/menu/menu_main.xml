@@ -15,4 +15,10 @@
         android:icon="@drawable/ic_favorites"
         android:title="Favorites"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_expense_tracker"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Harcama Takip"
+        app:showAsAction="always" />
 </menu>

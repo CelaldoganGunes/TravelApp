@@ -2,6 +2,7 @@ package com.example.travelappbir
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -96,8 +97,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_favorites -> {
-                // Favoriler sayfasına yönlendir
+                // Favoriler sayfasına geçiş
                 val intent = Intent(this, FavoritesActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_expense_tracker -> {
+                // Harcama Takip sayfasına geçiş
+                val intent = Intent(this, ExpenseTrackerActivity::class.java)
                 startActivity(intent)
                 true
             }
