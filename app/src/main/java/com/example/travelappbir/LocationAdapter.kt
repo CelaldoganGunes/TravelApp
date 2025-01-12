@@ -35,18 +35,6 @@ class LocationAdapter(
             .into(holder.imageView)
 
         // Tıklama olayı
-        /*
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, LocationDetailActivity::class.java)
-            intent.putExtra("name", location.name)
-            intent.putExtra("city", location.city)
-            intent.putExtra("district", location.district)
-            intent.putExtra("description", location.description)
-            intent.putStringArrayListExtra("imageUrls", ArrayList(location.imageUrls))
-            intent.putExtra("latitude", location.latitude) // Enlem
-            intent.putExtra("longitude", location.longitude) // Boylam
-            holder.itemView.context.startActivity(intent)
-        }*/
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, LocationDetailActivity::class.java)
             intent.putExtra("name", location.name) // Sadece ismi gönder
