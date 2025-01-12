@@ -3,16 +3,20 @@ package com.example.travelappbir
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ExpenseAdapter(private var expenses: MutableList<Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private var expenses: MutableList<Expense>,
+    private val onDeleteClick: (Expense) -> Unit
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
-    class ExpenseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val categoryTextView: TextView = view.findViewById(R.id.textCategory)
-        val descriptionTextView: TextView = view.findViewById(R.id.textDescription)
-        val amountTextView: TextView = view.findViewById(R.id.textAmount)
+    class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val textCategory: TextView = itemView.findViewById(R.id.textCategory)
+        val textDescription: TextView = itemView.findViewById(R.id.textDescription)
+        val textAmount: TextView = itemView.findViewById(R.id.textAmount)
+        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
@@ -23,9 +27,13 @@ class ExpenseAdapter(private var expenses: MutableList<Expense>) :
 
     override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
         val expense = expenses[position]
-        holder.categoryTextView.text = expense.category
-        holder.descriptionTextView.text = expense.description
-        holder.amountTextView.text = "${expense.amount} TL"
+        holder.textCategory.text = expense.category
+        holder.textDescription.text = expense.description
+        holder.textAmount.text = "%.2f TL".format(expense.amount)
+
+        holder.buttonDelete.setOnClickListener {
+            onDeleteClick(expense)
+        }
     }
 
     override fun getItemCount(): Int = expenses.size

@@ -41,7 +41,9 @@ class ExpenseTrackerActivity : AppCompatActivity() {
         categorySpinner.adapter = spinnerAdapter
 
         // RecyclerView için adapter ve layout manager
-        adapter = ExpenseAdapter(expenseList)
+        adapter = ExpenseAdapter(expenseList) { expense ->
+            deleteExpense(expense)
+        }
         expenseRecyclerView.layoutManager = LinearLayoutManager(this)
         expenseRecyclerView.adapter = adapter
 
@@ -72,6 +74,15 @@ class ExpenseTrackerActivity : AppCompatActivity() {
         descriptionEditText.text.clear()
         amountEditText.text.clear()
         Toast.makeText(this, "Harcama kaydedildi.", Toast.LENGTH_SHORT).show()
+        updateCategoryTotals()
+    }
+
+    private fun deleteExpense(expense: Expense) {
+        expenseList.remove(expense)
+        saveExpenses()
+        adapter.updateExpenses(expenseList)
+        Toast.makeText(this, "Harcama silindi.", Toast.LENGTH_SHORT).show()
+        updateCategoryTotals()
     }
 
     private fun saveExpenses() {
@@ -88,12 +99,12 @@ class ExpenseTrackerActivity : AppCompatActivity() {
         val type = object : TypeToken<MutableList<Expense>>() {}.type
         expenseList = Gson().fromJson(json, type)
         adapter.updateExpenses(expenseList)
+        updateCategoryTotals()
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                // Geri butonuna basıldığında bir önceki sayfaya dön
                 onBackPressed()
                 true
             }
@@ -101,4 +112,25 @@ class ExpenseTrackerActivity : AppCompatActivity() {
         }
     }
 
+    private fun calculateCategoryTotals(): Map<String, Double> {
+        val totals = mutableMapOf<String, Double>()
+        for (expense in expenseList) {
+            val category = expense.category
+            totals[category] = (totals[category] ?: 0.0) + expense.amount
+        }
+        return totals
+    }
+
+    private fun updateCategoryTotals() {
+        val totals = calculateCategoryTotals()
+        val layoutCategoryTotals: LinearLayout = findViewById(R.id.layoutCategoryTotals)
+        layoutCategoryTotals.removeAllViews() // Önceki verileri temizle
+
+        for ((category, total) in totals) {
+            val textView = TextView(this)
+            textView.text = "$category: ${"%.2f".format(total)} TL"
+            textView.textSize = 14f
+            layoutCategoryTotals.addView(textView)
+        }
+    }
 }
