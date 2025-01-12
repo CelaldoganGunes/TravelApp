@@ -5,3 +5,4 @@ data class Comment(
     val rating: Int,
     val comment: String
 )
+
