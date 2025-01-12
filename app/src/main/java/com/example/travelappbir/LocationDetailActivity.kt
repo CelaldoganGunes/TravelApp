@@ -21,11 +21,15 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
 
+// LocationDetailActivity: Bir lokasyonun detaylarını gösteren ve yönetim sağlayan bir aktivite.
 class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var locationName: String
-    private lateinit var location: Location
-    private var isFavorite: Boolean = false
+    // Lokasyon adı ve detaylarını tutan değişkenler
+    private lateinit var locationName: String // Lokasyon adı
+    private lateinit var location: Location // Lokasyon detayları
+    private var isFavorite: Boolean = false // Favori durumu
+
+    // Yorum adaptörü ve yorum listesi
     private lateinit var commentAdapter: CommentAdapter
     private var comments: MutableList<Comment> = mutableListOf()
 
@@ -36,50 +40,54 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         // Geri butonunu etkinleştir
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Intent ile gelen "name" değerini al
+        // Intent ile gelen lokasyon adını al
         locationName = intent.getStringExtra("name") ?: "Unknown Location"
         supportActionBar?.title = locationName
-        // JSON dosyasından lokasyon bilgilerini yükle
+
+        // Lokasyon detaylarını JSON'dan yükle
         location = loadLocationFromJson(locationName) ?: run {
             Toast.makeText(this, "Lokasyon bilgileri bulunamadı!", Toast.LENGTH_SHORT).show()
-            finish() // Lokasyon bulunamazsa sayfayı kapat
+            finish() // Eğer lokasyon bulunamazsa aktiviteyi kapat
             return
         }
 
-        // Favori durumu kontrolü
+        // Lokasyonun favori olup olmadığını kontrol et
         isFavorite = isLocationFavorite(location)
 
         // Lokasyon bilgilerini UI'ye yükle
         bindLocationToUI()
 
-        // Yorumları yükle
+        // Yorumları yükle ve listele
         setupComments()
 
-        // Haritayı yükle
+        // Harita bileşenini yükle
         setupMap()
     }
 
+    // Lokasyon bilgilerini kullanıcı arayüzüne bağlar
     private fun bindLocationToUI() {
-        val tvTitle: TextView = findViewById(R.id.tvDetailTitle)
-        val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict)
-        val tvDescription: TextView = findViewById(R.id.tvDetailDescription)
-        val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager)
-        val fabDirections: FloatingActionButton = findViewById(R.id.fabDirections)
+        val tvTitle: TextView = findViewById(R.id.tvDetailTitle) // Başlık metni
+        val tvCityDistrict: TextView = findViewById(R.id.tvDetailCityDistrict) // Şehir ve ilçe bilgisi
+        val tvDescription: TextView = findViewById(R.id.tvDetailDescription) // Açıklama
+        val galleryViewPager: ViewPager2 = findViewById(R.id.galleryViewPager) // Fotoğraf galerisi
+        val fabDirections: FloatingActionButton = findViewById(R.id.fabDirections) // Yol tarifi butonu
 
+        // Verileri UI'ye atama
         tvTitle.text = location.name
         tvCityDistrict.text = "${location.city}, ${location.district}"
         tvDescription.text = location.description
 
-        // Fotoğraf galerisi için adaptörü bağla
+        // Fotoğraf galerisi adaptörünü bağla
         val galleryAdapter = GalleryAdapter(location.imageUrls)
         galleryViewPager.adapter = galleryAdapter
 
-        // Yol tarifi butonu
+        // Yol tarifi butonuna tıklama olayı tanımla
         fabDirections.setOnClickListener {
             openGoogleMapsForDirections(location.latitude, location.longitude)
         }
     }
 
+    // Yorumları yükler ve listeye bağlar
     private fun setupComments() {
         val recyclerViewComments: RecyclerView = findViewById(R.id.recyclerViewComments)
         recyclerViewComments.layoutManager = LinearLayoutManager(this)
@@ -87,11 +95,13 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         commentAdapter = CommentAdapter(comments)
         recyclerViewComments.adapter = commentAdapter
 
+        // Yorum ekleme için form bileşenleri
         val etName: EditText = findViewById(R.id.etName)
         val etRating: EditText = findViewById(R.id.etRating)
         val etComment: EditText = findViewById(R.id.etComment)
         val btnSubmitComment: Button = findViewById(R.id.btnSubmitComment)
 
+        // Yorum ekleme işlemi
         btnSubmitComment.setOnClickListener {
             val name = etName.text.toString()
             val rating = etRating.text.toString().toIntOrNull()
@@ -99,10 +109,12 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (name.isNotEmpty() && rating != null && rating in 1..5 && commentText.isNotEmpty()) {
                 val newComment = Comment(name, rating, commentText)
-                comments.add(newComment)
-                PreferenceHelper.saveComments(this, locationName, comments)
-                commentAdapter.notifyDataSetChanged()
+                comments.add(newComment) // Yorum listesine ekle
+                PreferenceHelper.saveComments(this, locationName, comments) // Yorumları kaydet
+                commentAdapter.notifyDataSetChanged() // RecyclerView'i güncelle
                 Toast.makeText(this, "Yorum kaydedildi!", Toast.LENGTH_SHORT).show()
+
+                // Formu temizle
                 etName.text.clear()
                 etRating.text.clear()
                 etComment.text.clear()
@@ -112,6 +124,7 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // Harita bileşenini başlatır
     private fun setupMap() {
         val mapFragment = SupportMapFragment.newInstance()
         supportFragmentManager
@@ -119,9 +132,10 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             .replace(R.id.mapFragment, mapFragment)
             .commit()
 
-        mapFragment.getMapAsync(this)
+        mapFragment.getMapAsync(this) // Harita hazır olduğunda bu sınıfa callback gönderir
     }
 
+    // Google Maps'te rota açmak için bir URI oluşturur ve başlatır
     private fun openGoogleMapsForDirections(latitude: Double, longitude: Double) {
         val uri = Uri.parse("google.navigation:q=$latitude,$longitude")
         val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -133,20 +147,22 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // JSON dosyasından lokasyon bilgilerini yükler
     private fun loadLocationFromJson(name: String): Location? {
         return try {
-            val inputStream = assets.open("locations.json")
+            val inputStream = assets.open("locations.json") // Dosyayı aç
             val reader = InputStreamReader(inputStream)
-            val type = object : TypeToken<List<Location>>() {}.type
+            val type = object : TypeToken<List<Location>>() {}.type // JSON'u çözmek için tür
             val locations: List<Location> = Gson().fromJson(reader, type)
             reader.close()
-            locations.find { it.name == name } // Lokasyonu isme göre bul
+            locations.find { it.name == name } // İsme göre lokasyonu bul
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
 
+    // Harita hazır olduğunda çağrılır
     override fun onMapReady(googleMap: GoogleMap) {
         val locationLatLng = LatLng(location.latitude, location.longitude)
         googleMap.addMarker(MarkerOptions().position(locationLatLng).title(location.name))
@@ -155,24 +171,25 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_location_detail, menu)
-        updateFavoriteIcon(menu?.findItem(R.id.action_favorite))
+        updateFavoriteIcon(menu?.findItem(R.id.action_favorite)) // Favori ikonu güncelle
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressed() // Geri butonuna basıldığında aktiviteyi kapat
                 true
             }
             R.id.action_favorite -> {
-                toggleFavoriteStatus(item)
+                toggleFavoriteStatus(item) // Favori durumunu değiştir
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    // Favori durumunu değiştirir
     private fun toggleFavoriteStatus(item: MenuItem) {
         val favorites = PreferenceHelper.getFavorites(this)
         if (isFavorite) {
@@ -182,11 +199,12 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             favorites.add(location)
             Toast.makeText(this, "Favorilere eklendi", Toast.LENGTH_SHORT).show()
         }
-        PreferenceHelper.saveFavorites(this, favorites)
+        PreferenceHelper.saveFavorites(this, favorites) // Favori listesini kaydet
         isFavorite = !isFavorite
-        updateFavoriteIcon(item)
+        updateFavoriteIcon(item) // İkonu güncelle
     }
 
+    // Favori ikonunu günceller
     private fun updateFavoriteIcon(item: MenuItem?) {
         item?.icon = if (isFavorite) {
             getDrawable(R.drawable.ic_star_filled)
@@ -195,6 +213,7 @@ class LocationDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // Lokasyonun favori olup olmadığını kontrol eder
     private fun isLocationFavorite(location: Location): Boolean {
         val favorites = PreferenceHelper.getFavorites(this)
         return favorites.any { it.name == location.name }
