@@ -12,19 +12,19 @@
     <!-- Favoriler Butonu -->
     <item
         android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_favorites"
+        android:icon="@android:drawable/star_big_on"
         android:title="Favorites"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_expense_tracker"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_expenses"
         android:title="Harcama Takip"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_visa_check"
         android:title="Vize Kontrol"
-        android:icon="@android:drawable/btn_plus"
+        android:icon="@drawable/ic_passport"
         app:showAsAction="always" />
 </menu>
