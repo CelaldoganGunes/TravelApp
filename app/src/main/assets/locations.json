@@ -3,12 +3,12 @@
     "name": "Eiffel Tower",
     "city": "Paris",
     "district": "Île-de-France",
-    "imageUrl": "https://example.com/eiffel.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/250px-Tour_Eiffel_Wikimedia_Commons.jpg",
     "description": "Eiffel Kulesi, Paris'teki en ünlü simgelerden biridir. 1889 Dünya Fuarı için inşa edilmiştir ve 330 metre yüksekliğiyle dikkat çeker.",
     "imageUrls": [
-      "https://example.com/eiffel1.jpg",
-      "https://example.com/eiffel2.jpg",
-      "https://example.com/eiffel3.jpg"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShsoR-vyw93tzAk3a4mcH0-UdhsxmfKLW8nw&s",
+      "https://ozlemkesifte.com/wp-content/uploads/2021/02/eyfel-1024x686.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4GAS8X_fj3xgxRBojdy30qihhZ5TxjCnP9w&s"
     ],
     "latitude": 48.8588443,
     "longitude": 2.2943506
@@ -17,12 +17,12 @@
     "name": "Statue of Liberty",
     "city": "New York",
     "district": "New York County",
-    "imageUrl": "https://example.com/liberty.jpg",
+    "imageUrl": "https://www.worldatlas.com/upload/f4/d8/7b/shutterstock-1397031029.jpg",
     "description": "Özgürlük Anıtı, ABD'nin simgelerinden biridir. New York'un Liberty Adası'nda bulunur ve bağımsızlık ile özgürlüğü temsil eder.",
     "imageUrls": [
-      "https://example.com/liberty1.jpg",
-      "https://example.com/liberty2.jpg",
-      "https://example.com/liberty3.jpg"
+      "https://cdn.britannica.com/71/99571-050-DFF0A6E5/Statue-of-Liberty-Island-New-York.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Liberty_Island_photo_Don_Ramey_Logan.jpg/1200px-Liberty_Island_photo_Don_Ramey_Logan.jpg",
+      "https://media.tacdn.com/media/attractions-splice-spp-674x446/14/ca/d2/63.jpg"
     ],
     "latitude": 40.689247,
     "longitude": -74.044502
@@ -31,18 +31,18 @@
     "name": "Great Wall",
     "city": "Beijing",
     "district": "China",
-    "imageUrl": "https://example.com/greatwall.jpg",
+    "imageUrl": "https://cdn.britannica.com/89/179589-138-3EE27C94/Overview-Great-Wall-of-China.jpg?w=800&h=450&c=crop",
     "description": "Çin Seddi, dünyanın en uzun yapılarından biridir ve Çin'in kuzeyinde yer alır. Savunma amacıyla inşa edilmiştir.",
     "imageUrls": [
-      "https://example.com/wall1.jpg",
-      "https://example.com/wall2.jpg",
-      "https://example.com/wall3.jpg"
+      "https://www.china-mike.com/wp-content/uploads/2019/05/Great-Wall-China-Sunset.jpg",
+      "https://cdn.britannica.com/82/94382-050-20CF23DB/Great-Wall-of-China-Beijing.jpg",
+      "https://img.static-kl.com/images/media/E5F5918C-9435-4CE6-9775780B48F3C39D?w=960"
     ],
     "latitude": 40.431908,
     "longitude": 116.570374
   },
   {
-    "name": "DolmaBahçe Sarayı",
+    "name": "Dolmabahçe Sarayı",
     "city": "İstanbul",
     "district": "Türkiye",
     "imageUrl": "https://i.pinimg.com/236x/e8/25/c9/e825c9888e11f4f444234d74e34b2ed9.jpg",
